@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<!-- Скайп скрипт-->
+<script type="text/javascript" src="https://secure.skypeassets.com/i/scom/js/skype-uri.js"></script>
+@foreach (var Person in ViewBag.Persons) {
+    <article class="result-list-item" onClick="person();">
+        <h2>@Person.Surname @Person.Name @Person.Patronymic</h2>
+        <div class="result-list-item-is-hover" >
+            <p>@Person.Mail</p>
+            <p>@Person.Date</p>
+            <a href="skype:@Person.PhoneNumber?call">Мобильный звонок </a>
+            <div id="SkypeButton_Call_@(Person.SkypeLogin)_1">
+                <!-- Скайп скрипт начало-->
+                <script type="text/javascript">
+                    Skype.ui({
+                        "name": "call",
+                        "element": "SkypeButton_Call_@(Person.SkypeLogin)_1",
+                        "participants": ["@Person.SkypeLogin"],
+                        "imageSize": 32
+                    });
+                </script>
+                <!-- Скайп скрипт конец-->
+            </div>
+        </div>
+</article>
+<!--<script src="../../Scripts/angular.js"></script>
+<script>
+    var purchaseApp = angular.module("notebookApp", []);
+    parchaseApp.controler("notebook");
+
+    function person(){
+        var messageElement = document.createElement("article");
+        messageElement.className = "alert alert-success";
+        messageElement.innerHTML = message;
+        var nicknameElement = document.createElement("span");
+        nicknameElement.className = "navbar-right";
+        nicknameElement.innerHTML = nickname;
+        var sectionElement = document.getElementById("message-section");
+        sectionElement.insertBefore(messageElement, sectionElement.firstChild).appendChild(nicknameElement);
+    }
+</script>-->
+}

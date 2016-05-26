@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="shortcut icon" href="http://icanbecreative.com/resources/images/favico.ico" />
+    @Styles.Render("~/Content/search.css")
+    @Styles.Render("~/Content/bootstrap.css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/Scripts/search.js")
+    <!--Scripts.Render("~/Scripts/angular.min.js")-->
+    <meta property="og:url" content="http://localhost/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Search" />
+    <meta property="og:description" content="my description" />
+    <meta property="og:image" content="http://localhost/featured.jpg" />
+</head>
+<body>
+
+
+    <form> <!--onsubmit="submitFn(this, event);"-->
+        <div class="navbar-collapse collapse">
+            @Html.Partial("_LoginPartial")
+        </div>
+        <div class="search-wrapper">
+            <div class="input-holder">
+                <form action="/?SearchString=%D0%A5%D0%9E%D0%92" method="post">
+                    <input id="SearchString" name="SearchString" type="text" value="ХОВ" class="search-input" placeholder="Type to search"/>
+                    <button type="submit" value="Search" class="search-icon" onclick="searchToggle(this, event);"><span></span></button>
+                </form>    
+                <!--<form action="/?SearchString=%D0%A5%D0%9E%D0%92" method="post">
+                    <input id="SearchString" name="SearchString" type="text" class="search-input" placeholder="Type to search" />
+                    <button type="submit" value="Search" class="search-icon" onclick="searchToggle(this, event);"><span></span></button>
+                </form>-->
+</div>
+                    <span class="close" onclick="searchToggle(this, event);"></span>
+                    <div class="result-container">
+                    </div>
+                    <div class="container body-content">
+                        @RenderBody()
+                        <hr />
+                    </div>
+                </div>
+    </form>
+        <footer><p style="text-align:center;color: darkcyan;">Copyright &copy; Никита Федоров @DateTime.Now.Year</p></footer>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
