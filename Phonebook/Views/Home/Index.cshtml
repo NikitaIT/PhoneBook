@@ -4,7 +4,7 @@
 <!-- Скайп скрипт-->
 <script type="text/javascript" src="https://secure.skypeassets.com/i/scom/js/skype-uri.js"></script>
 @foreach (var Person in ViewBag.Persons) {
-    <article class="result-list-item" onClick="person();">
+    <article class="result-list-item" onClick="person();" data-toggle="modal" data-target="#@Person.Id">
         <h2>@Person.Surname @Person.Name @Person.Patronymic</h2>
         <div class="result-list-item-is-hover" >
             <p>@Person.Mail</p>
@@ -24,6 +24,41 @@
             </div>
         </div>
 </article>
+
+    <!-- Modal -->
+    <div style="" class="modal fade" id="@Person.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">@Person.Surname @Person.Name @Person.Patronymic</h4>
+                </div>
+                <div class="modal-body">
+                        <p>@Person.Mail</p>
+                        <p>@Person.Date</p>
+                        <a href="skype:@Person.PhoneNumber?call">Мобильный звонок </a>
+                        <div id="SkypeButton_Call_@(Person.SkypeLogin)_1" style="position:absolute">
+                            <script type="text/javascript">
+                            Skype.ui({
+                                "name": "call",
+                                "element": "SkypeButton_Call_@(Person.SkypeLogin)_1",
+                                "participants": ["@Person.SkypeLogin"],
+                                "imageSize": 32
+                            });
+                            </script>
+                        </div>
+                </div><!--modal-body end-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary copy">Копировать</button>
+                    <button type="button" class="btn btn-primary">Сравнить</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                <script>body.removeChild(document.getElementsByClassName('modal-backdrop'));</script>
+                </div><!--modal-footer end-->
+            </div><!--modal-content end-->
+        </div>
+    </div><!-- Modal конец -->
+
+}
 <!--<script src="../../Scripts/angular.js"></script>
 <script>
     var purchaseApp = angular.module("notebookApp", []);
@@ -40,4 +75,25 @@
         sectionElement.insertBefore(messageElement, sectionElement.firstChild).appendChild(nicknameElement);
     }
 </script>-->
-}
+<script>
+    var copyEmailBtn = document.querySelector('.copy');
+copyEmailBtn.addEventListener('click', function(event) {
+  // Выборка ссылки с электронной почтой
+    var emailLink = document.querySelector('.modal-dialog');
+  var range = document.createRange();
+  range.selectNode(emailLink);
+  window.getSelection().addRange(range);
+
+  try {
+    // Теперь, когда мы выбрали текст ссылки, выполним команду копирования
+    var successful = document.execCommand('copy');
+    var msg = successful ? 'successful' : 'unsuccessful';
+    console.log('Copy email command was ' + msg);
+  } catch(err) {
+    console.log('Oops, unable to copy');
+  }
+
+  // Снятие выделения - ВНИМАНИЕ: вы должны использовать
+  // removeRange(range) когда это возможно
+  window.getSelection().removeAllRanges();
+});</script>
