@@ -11,7 +11,7 @@ namespace Phonebook.Controllers
     {
         public PersonDbContext PersonDb = new PersonDbContext();
         // создаем список взаимодействия  
-        public List<int> IdPersonsWhoAdded = new List<int> { };
+        public List<int> IdPersonsWhoAdded = new List<int> {1,2,3};
         // GET: Admin
         public ActionResult Index()
         {

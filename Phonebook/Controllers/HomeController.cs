@@ -9,7 +9,7 @@ namespace Phonebook.Controllers
         // создаем контекст данных
         public PersonDbContext PersonDb = new PersonDbContext();
         // создаем список взаимодействия  
-        public List<int> IdPersonsWhoAdded = new List<int> {-1,-2};
+        public List<int> IdPersonsWhoAdded = new List<int> { 1, 2, 3, 4 };
         /* Index - инициализация страницы
          * searchString - Выборка по запросу
          * Index - место операции

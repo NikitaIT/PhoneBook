@@ -9,7 +9,7 @@
 <!-- КОНЕЦ скрипт подключение-->
 foreach(var Id in ViewBag.IdPersonsWhoAdded)
 {
-    <script>add(@Id);</script>
+    <script>add("@Id");</script>
 }
 foreach (var Person in ViewBag.Persons)
 {
@@ -56,7 +56,7 @@ foreach (var Person in ViewBag.Persons)
                             center: [@Person.Plase],
                             zoom: 13
                         });
-                        DG.marker([@Person.Plase]).addTo(map).bindPopup(@Person.PlaseName);
+                        DG.marker(["@Person.Plase"]).addTo(map).bindPopup("@Person.PlaseName");
                     });
                     </script>
                 </div><!--modal-body end-->

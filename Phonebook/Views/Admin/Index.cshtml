@@ -5,9 +5,12 @@
 @{
     Layout = "~/Views/Shared/_AdminPanel.cshtml";
 }
-
+<!-- скрипт подключение-->
+<script src="http://maps.api.2gis.ru/2.0/loader.js?pkg=full"></script>
+<script type="text/javascript" src="https://secure.skypeassets.com/i/scom/js/skype-uri.js"></script>
+<!-- КОНЕЦ скрипт подключение-->
         <div class="container-fluid">
-            <div class="row">
+            <div class="row" style="margin-top:100px;">
                 <div class="col-sm-3 col-md-2 sidebar">
                     <ul class="nav nav-sidebar">
                         <li class="active"><a href="#">Overview</a></li>
@@ -24,7 +27,7 @@
                         <li><a href="">Групповой звонок</a></li>
                     </ul>
                 </div>
-                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <div class="col-sm-9 col-md-10 main">
                     <h1 class="page-header">Сотрудники</h1>
 
                     <div class="row placeholders">
@@ -32,21 +35,21 @@
                         {
                             foreach (var Id in ViewBag.IdPersonsWhoAdded)
                             {
-                                if (Person.id == Id)
+                                if (Person.Id == Id)
                                 {
                         <div class="col-xs-6 col-sm-3 placeholder">
-                            <div id="map" style="width:200px; height:200px"></div>
+                            <div id="map@(Person.Id)" style="width:200px; height:200px"></div>
                             <script type="text/javascript">
                     var map;
                     DG.then(function () {
-                        map = DG.map('map', {
+                        map = DG.map('map@(Person.Id)', {
                             center: [@Person.Plase],
                             zoom: 13
                         });
                         DG.marker([@Person.Plase]).addTo(map).bindPopup(@Person.PlaseName);
                     });
                             </script>
-                            <h4>Person.name</h4>
+                            <h4>@Person.Name</h4>
                             <span class="text-muted">
                                 <div id="SkypeButton_Call_@(Person.SkypeLogin)_1">
                                     <script type="text/javascript">
@@ -104,7 +107,7 @@
 
     function SendMail(sRecipientMail, sSubject, sMsgBody, subj, text, files) {
         
-        var to = @Person.Mail;
+        var to = "@Person.Mail";
         try {
             // create a session and log on -- username and password in profile    
             var refMsg = WScript.CreateObject("CDO.Message");
