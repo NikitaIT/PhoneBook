@@ -1,17 +1,26 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-<!-- Скайп скрипт-->
+@if (Request.IsAuthenticated)
+{ 
+<!-- скрипт подключение-->
+<script src="http://maps.api.2gis.ru/2.0/loader.js?pkg=full"></script>
 <script type="text/javascript" src="https://secure.skypeassets.com/i/scom/js/skype-uri.js"></script>
-@foreach (var Person in ViewBag.Persons) {
-    <article class="result-list-item" onClick="person();" data-toggle="modal" data-target="#@Person.Id">
+<!-- КОНЕЦ скрипт подключение-->
+foreach(var Id in ViewBag.IdPersonsWhoAdded)
+{
+    <script>add(@Id);</script>
+}
+foreach (var Person in ViewBag.Persons)
+{
+    <article class="result-list-item" data-toggle="modal" data-target="#@Person.Id">
         <h2>@Person.Surname @Person.Name @Person.Patronymic</h2>
         <div class="result-list-item-is-hover" >
             <p>@Person.Mail</p>
             <p>@Person.Date</p>
             <a href="skype:@Person.PhoneNumber?call">Мобильный звонок </a>
+            <!-- Скайп скрипт начало-->
             <div id="SkypeButton_Call_@(Person.SkypeLogin)_1">
-                <!-- Скайп скрипт начало-->
                 <script type="text/javascript">
                     Skype.ui({
                         "name": "call",
@@ -20,13 +29,13 @@
                         "imageSize": 32
                     });
                 </script>
-                <!-- Скайп скрипт конец-->
             </div>
+            <!-- Скайп скрипт конец-->
         </div>
-</article>
+    </article>
 
     <!-- Modal -->
-    <div style="" class="modal fade" id="@Person.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div style="" class="modal fade" id="@Person.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"  data-backdrop="false" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -37,53 +46,63 @@
                         <p>@Person.Mail</p>
                         <p>@Person.Date</p>
                         <a href="skype:@Person.PhoneNumber?call">Мобильный звонок </a>
-                        <div id="SkypeButton_Call_@(Person.SkypeLogin)_1" style="position:absolute">
-                            <script type="text/javascript">
-                            Skype.ui({
-                                "name": "call",
-                                "element": "SkypeButton_Call_@(Person.SkypeLogin)_1",
-                                "participants": ["@Person.SkypeLogin"],
-                                "imageSize": 32
-                            });
-                            </script>
-                        </div>
+                    <div id="SkypeButton_Call_@(Person.SkypeLogin)_2">
+                    </div>
+                    <div id="map" style="width:300px; height:200px"></div>
+                    <script type="text/javascript">
+                    var map;
+                    DG.then(function () {
+                        map = DG.map('map', {
+                            center: [@Person.Plase],
+                            zoom: 13
+                        });
+                        DG.marker([@Person.Plase]).addTo(map).bindPopup(@Person.PlaseName);
+                    });
+                    </script>
                 </div><!--modal-body end-->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary copy">Копировать</button>
-                    <button type="button" class="btn btn-primary">Сравнить</button>
+                    <form>
+                        <button type="submit" formmethod="get" name="Id" class="btn btn-primary" value="@Person.Id">Сравнить</button>
+                    </form>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                <script>body.removeChild(document.getElementsByClassName('modal-backdrop'));</script>
-                </div><!--modal-footer end-->
+</div><!--modal-footer end-->
             </div><!--modal-content end-->
         </div>
     </div><!-- Modal конец -->
-
-}
-<!--<script src="../../Scripts/angular.js"></script>
+} <!-- Конец цикла вывода списка персон-->
+<!--
+    Добавление кнопки скрипт вариант 1; 
+    Больше не применяется; Обновление страницы ломает метод;//fix
+    Применяется
+    Не трогать
+-->
 <script>
-    var purchaseApp = angular.module("notebookApp", []);
-    parchaseApp.controler("notebook");
-
-    function person(){
-        var messageElement = document.createElement("article");
-        messageElement.className = "alert alert-success";
-        messageElement.innerHTML = message;
-        var nicknameElement = document.createElement("span");
-        nicknameElement.className = "navbar-right";
-        nicknameElement.innerHTML = nickname;
-        var sectionElement = document.getElementById("message-section");
-        sectionElement.insertBefore(messageElement, sectionElement.firstChild).appendChild(nicknameElement);
+    function add(id) {
+        var button = document.createElement("button");
+        button.className = "btn btn-primary dropdown-toggle";
+        button.innerHTML = id
+            + "<ul class='dropdown-menu' role='menu'><li>"
+            + "<form><button type='button' formmethod='get' name='Id' class='btn btn-primary' value='"
+            + id
+            + "'>"
+            +"Убрать</button></form></li></ul>";
+        var sectionElement = document.getElementById("selectedPerson");
+        sectionElement.appendChild(button);
     }
-</script>-->
+</script>
+<!--
+    Копирование текста из модального окна
+    Не трогать
+-->
 <script>
     var copyEmailBtn = document.querySelector('.copy');
 copyEmailBtn.addEventListener('click', function(event) {
-  // Выборка ссылки с электронной почтой
+    // Выборка ссылки из модального окна
     var emailLink = document.querySelector('.modal-dialog');
   var range = document.createRange();
   range.selectNode(emailLink);
   window.getSelection().addRange(range);
-
   try {
     // Теперь, когда мы выбрали текст ссылки, выполним команду копирования
     var successful = document.execCommand('copy');
@@ -92,8 +111,8 @@ copyEmailBtn.addEventListener('click', function(event) {
   } catch(err) {
     console.log('Oops, unable to copy');
   }
-
   // Снятие выделения - ВНИМАНИЕ: вы должны использовать
   // removeRange(range) когда это возможно
   window.getSelection().removeAllRanges();
 });</script>
+}

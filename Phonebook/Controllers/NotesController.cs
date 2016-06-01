@@ -14,7 +14,7 @@ namespace Phonebook.Controllers
             var list = new List<Person>
             {
                 new Person { Id=1, Surname ="АК", Name = "Витя", Patronymic = "Сергеевич", SkypeLogin = "edfds23df", PhoneNumber =
-                "4123413241234", Mail = "edfds23df", Password = "edfds23df", Date = DateTime.UtcNow}
+                "4123413241234", Mail = "edfds23df", Password = "edfds23df", Date = DateTime.UtcNow,Plase = "54.98, 82.89", PlaseName = "Жопа"}
             };
             return list;
         }

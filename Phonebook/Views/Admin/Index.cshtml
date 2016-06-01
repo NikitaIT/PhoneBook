@@ -1,0 +1,183 @@
+﻿
+
+
+<!DOCTYPE html>
+
+
+@{
+    Layout = "_AdminPanel";
+}
+
+@if (Request.IsAuthenticated)
+{
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-3 col-md-2 sidebar">
+                    <ul class="nav nav-sidebar">
+                        <li class="active"><a href="#">Overview</a></li>
+                        <li>@Html.ActionLink("Добавить", "Add", "Admin", routeValues: null, htmlAttributes: new { id = "addLink" })</li>
+                        <li>@Html.ActionLink("Удалить", "Del", "Admin", routeValues: null, htmlAttributes: new { id = "delLink" })</li>
+                        <li>@Html.ActionLink("Изменить", "Edit", "Admin", routeValues: null, htmlAttributes: new { id = "editLink" })</li>
+                    </ul>
+                    <ul class="nav nav-sidebar">
+                        <li><a href=""></a></li>
+                        <li><a href="">Изменить пароль</a></li>
+                        <li><a href="">Отправить рассылку</a></li>
+                        <li><a href="">Вынести мусор</a></li>
+                        <li><a href="">Групповой звонок</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                    <h1 class="page-header">Сотрудники</h1>
+
+                    <div class="row placeholders">
+                        @foreach (var Person in ViewBag.Persons)
+                        {
+                            foreach (var Id in ViewBag.IdPersonsWhoAdded)
+                            {
+                                if (Person.id == Id)
+                                {
+                        <div class="col-xs-6 col-sm-3 placeholder">
+                            <div id="map" style="width:200px; height:200px"></div>
+                            <script type="text/javascript">
+                    var map;
+                    DG.then(function () {
+                        map = DG.map('map', {
+                            center: [@Person.Plase],
+                            zoom: 13
+                        });
+                        DG.marker([@Person.Plase]).addTo(map).bindPopup(@Person.PlaseName);
+                    });
+                            </script>
+                            <h4>Person.name</h4>
+                            <span class="text-muted">
+                                <div id="SkypeButton_Call_@(Person.SkypeLogin)_1">
+                                    <script type="text/javascript">
+                    Skype.ui({
+                        "name": "call",
+                        "element": "SkypeButton_Call_@(Person.SkypeLogin)_1",
+                        "participants": ["@Person.SkypeLogin"],
+                        "imageSize": 32
+                    });
+                                    </script>
+                                </div>
+                            </span>
+                        </div>
+                                }
+                            }
+                        }
+                   </div>
+
+                    <h2 class="sub-header">Section title</h2>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Header</th>
+                                    <th>Header</th>
+                                    <th>Header</th>
+                                    <th>Header</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1,001</td>
+                                    <td>Lorem</td>
+                                    <td>ipsum</td>
+                                    <td>dolor</td>
+                                    <td>sit</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            }
+            else
+            {
+            <head>
+                <title>You Shall Not Pass!</title>
+            </head>
+            <body>
+                <img src="http://orig11.deviantart.net/8a5d/f/2013/210/1/e/you_shall_not_pass____gandalf___lotr_by_stickeesbiz-d6fqcm5.png" />
+            </body>
+            }
+
+<script>
+    //var to = "почта";
+    //var subj = "тема";
+    //var text = "письмо";
+
+    function SendMail(sRecipientMail, sSubject, sMsgBody, to, subj, text, files) {
+        foreach
+        var to = @Person.Mail;
+        try {
+            // create a session and log on -- username and password in profile    
+            var refMsg = WScript.CreateObject("CDO.Message");
+            var refConf = WScript.CreateObject("CDO.Configuration");
+
+            // Setting configuration params   
+            with (refConf.Fields) {
+                Item("http://schemas.microsoft.com/cdo/configuration/smtpserver") = "smtp.mail.ru";
+                Item("http://schemas.microsoft.com/cdo/configuration/sendusing") = 2;
+                Item("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate") = 1;
+                Item("http://schemas.microsoft.com/cdo/configuration/sendusername") = "lou@list.ru";
+                Item("http://schemas.microsoft.com/cdo/configuration/sendpassword") = "****";
+            }
+            refConf.Fields.Update();
+
+            with (refMsg) {
+                Configuration = refConf;
+                To = sRecipientMail;
+                From = "lou@list.ru";
+                Subject = sSubject;
+                TextBody = sMsgBody;
+            }
+
+            if (files) {
+                for (var i = 0; i < files.length; i++)
+                    refMsg.AddAttachment(files[i]);
+            }
+
+            refMsg.Send();
+        }
+        catch (e) {
+            WScript.Echo("SendMail error !!! : " + e.description);
+            WScript.Quit(1);
+        }
+    }
+
+</script>
+
+            <!-- Modal -->
+            <div style="" class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">Отправить письмо</h4>
+                        </div>
+                        <div class="modal-body">
+                                <td align="center">
+                                    <h3>Рассылка</h3>
+                                    <form method="post" onsubmit="SendMail(this.email.value, this.user.value, this.tel.value,this.sbdg.value,this.text.value); return false" action="">
+                                        <p><input type="text" size="40" placeholder="Ваше имя" name="user" value="Админ"></p>
+                                        <p><input type="text" size="40" placeholder="Телефон" name="tel"></p>
+                                        <p><input type="text" size="40" placeholder="Ваш E-mail" name="email"></p>
+  
+                                        <p><input type="text" size="40" placeholder="Тема" name="sbdg"></p>
+                                        <p><input type="text" size="40" placeholder="Сообщение" name="text"></p>
+                                        
+                                        <p><input type="submit" value="Отправить"></p>
+                                    </form>
+                                    <br>* Поля Имя и email обязательны для заполнения
+                            </div>
+                            
+                        </div><!--modal-body end-->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                        </div><!--modal-footer end-->
+                    </div><!--modal-content end-->
+                </div>
+            </div><!-- Modal конец -->
