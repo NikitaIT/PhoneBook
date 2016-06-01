@@ -7,9 +7,9 @@ namespace Phonebook.Controllers
     public class HomeController : Controller
     {
         // создаем контекст данных
-        private PersonDbContext PersonDb = new PersonDbContext();
+        public PersonDbContext PersonDb = new PersonDbContext();
         // создаем список взаимодействия  
-        private List<int> IdPersonsWhoAdded = new List<int> {-1,-2};
+        public List<int> IdPersonsWhoAdded = new List<int> {-1,-2};
         /* Index - инициализация страницы
          * searchString - Выборка по запросу
          * Index - место операции

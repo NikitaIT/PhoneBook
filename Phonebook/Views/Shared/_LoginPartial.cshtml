@@ -10,7 +10,7 @@
         </li>
          @if ((User.Identity.Name== "NIKITA2008-101@yandex.ru"))//Request.IsSecureConnection
          {<li>
-            @Html.ActionLink("Админка", "Index", "Admin", routeValues: null, htmlAttributes: new { id = "registerLink" });
+            @Html.ActionLink("Админка", "Index", "Admin", routeValues: null, htmlAttributes: new { id = "adminLink" });
          </li>
          }
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Выйти</a></li>

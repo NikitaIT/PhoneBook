@@ -9,6 +9,7 @@ namespace Phonebook.Controllers
 {
     public class NotesController : ApiController
     {
+        //GET: Person
         public List<Person> Get()
         {
             var list = new List<Person>

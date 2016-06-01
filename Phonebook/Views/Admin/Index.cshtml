@@ -1,15 +1,11 @@
 ﻿
-
-
-<!DOCTYPE html>
-
-
 @{
-    Layout = "_AdminPanel";
+    ViewBag.Title = "Admin Page";
+}
+@{
+    Layout = "~/Views/Shared/_AdminPanel.cshtml";
 }
 
-@if (Request.IsAuthenticated)
-{
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-3 col-md-2 sidebar">
@@ -18,6 +14,7 @@
                         <li>@Html.ActionLink("Добавить", "Add", "Admin", routeValues: null, htmlAttributes: new { id = "addLink" })</li>
                         <li>@Html.ActionLink("Удалить", "Del", "Admin", routeValues: null, htmlAttributes: new { id = "delLink" })</li>
                         <li>@Html.ActionLink("Изменить", "Edit", "Admin", routeValues: null, htmlAttributes: new { id = "editLink" })</li>
+                        <li>@Html.ActionLink("Детали", "Detal", "Admin", routeValues: null, htmlAttributes: new { id = "detalLink" })</li>
                     </ul>
                     <ul class="nav nav-sidebar">
                         <li><a href=""></a></li>
@@ -74,43 +71,39 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Header</th>
-                                    <th>Header</th>
-                                    <th>Header</th>
+                                    <th>Name</th>
+                                    <th>Mail</th>
+                                    <th>Date</th>
                                     <th>Header</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach (var Person in ViewBag.Persons)
+                                {
                                 <tr>
-                                    <td>1,001</td>
-                                    <td>Lorem</td>
-                                    <td>ipsum</td>
-                                    <td>dolor</td>
-                                    <td>sit</td>
+                                    <td>@Person.Id</td>
+                                    <td>@Person.Surname @Person.Name @Person.Patronymic</td>
+                                    <td>@Person.Mail</td>
+                                    <td>@Person.Date</td>
+                                    <td>@Person.PhoneNumber</td>
+                                    <td>@Person.SkypeLogin</td>
+                                    <td>@Person.PlaseName [@Person.Plase]</td>
                                 </tr>
+                                }
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-            }
-            else
-            {
-            <head>
-                <title>You Shall Not Pass!</title>
-            </head>
-            <body>
-                <img src="http://orig11.deviantart.net/8a5d/f/2013/210/1/e/you_shall_not_pass____gandalf___lotr_by_stickeesbiz-d6fqcm5.png" />
-            </body>
-            }
-
+@foreach (var Person in ViewBag.Persons)
+{
 <script>
     //var to = "почта";
     //var subj = "тема";
     //var text = "письмо";
 
-    function SendMail(sRecipientMail, sSubject, sMsgBody, to, subj, text, files) {
-        foreach
+    function SendMail(sRecipientMail, sSubject, sMsgBody, subj, text, files) {
+        
         var to = @Person.Mail;
         try {
             // create a session and log on -- username and password in profile    
@@ -146,10 +139,10 @@
             WScript.Echo("SendMail error !!! : " + e.description);
             WScript.Quit(1);
         }
-    }
+        }
 
 </script>
-
+}
             <!-- Modal -->
             <div style="" class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false" aria-hidden="true">
                 <div class="modal-dialog">
